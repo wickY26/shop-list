@@ -1,28 +1,47 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import * as Papa from 'papaparse';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+/**
+ * Transform data array to data object
+ * where object properties come from properties array
+ */
+const transformData = (properties, data) => (
+  data
+    .map(values => properties
+      .reduce((object, property, propertyIndex) => {
+        object[property] = values[propertyIndex];
+        return object;
+      }, {})
+    )
+)
+
+const App = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  /**
+   * In this effect function we fetch products.csv and transform into list of product objects
+   * This effect will run only one time
+   */
+  useEffect(() => {
+    Papa.parse('/products.csv', {
+      download: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        const data = transformData(results.data[0], results.data.slice(1));
+        setProducts(data);
+        setLoading(false);
+      }
+    });
+  }, []);
+
+  return (
+    <div>
+      Is loading: {loading ? 'loading' : 'not loading'}
+      <br></br>
+      Product count: {products.length}
+    </div>
+  );
+};
 
 export default App;
