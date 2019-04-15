@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as Papa from 'papaparse';
+import Products from './Products/Products';
 
 /**
  * Transform data array to data object
@@ -40,6 +41,7 @@ const App = () => {
       Is loading: {loading ? 'loading' : 'not loading'}
       <br></br>
       Product count: {products.length}
+      <Products products={products.filter(product => product.sale_price !== product.price).slice(0, 20)} />
     </div>
   );
 };
