@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Grid } from '@material-ui/core';
 import * as Papa from 'papaparse';
+import Products from './Products/Products';
 
 /**
  * Transform data array to data object
@@ -36,11 +38,14 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      Is loading: {loading ? 'loading' : 'not loading'}
-      <br></br>
-      Product count: {products.length}
-    </div>
+    <Grid container justify="center">
+      <Grid item md="9" lg="7">
+        Is loading: {loading ? 'loading' : 'not loading'}
+        <br></br>
+        Product count: {products.length}
+        <Products products={products.filter(product => product.sale_price !== product.price).slice(0, 20)} />
+      </Grid>
+    </Grid>
   );
 };
 
