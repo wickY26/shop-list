@@ -80,6 +80,9 @@ const App = () => {
             (
               <>
                 <ProductsFilter onFilterChange={filter => setFilteredProducts(filterProducts(products, filter))} />
+                <Typography variant="caption" align="center">
+                  {filteredProducts.length} products are filtered out of {products.length}.
+                </Typography>
                 <Products products={filteredProducts.slice(0, 20)} />
               </>
             )
