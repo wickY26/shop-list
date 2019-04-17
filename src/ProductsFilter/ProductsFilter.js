@@ -68,7 +68,7 @@ const ProductsFilter = ({ classes, onFilterChange }) => {
         margin="normal"
         variant="outlined"
       >
-        {['', 'male', 'female', 'unisex'].map(option => (
+        {['male', 'female', 'unisex'].map(option => (
           <MenuItem key={option} value={option}>
             {option}
           </MenuItem>

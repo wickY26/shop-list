@@ -72,8 +72,9 @@ const Products = ({ classes, products }) => {
             product
               .additional_image_link
               .split(',')
-              .map(link => (
+              .map((link, index) => (
                 <CardMedia
+                  key={index}
                   className={classes.galleryImage}
                   image={link}
                 />

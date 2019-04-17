@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import * as Papa from 'papaparse';
 import Products from './Products/Products';
 import ProductsFilter from './ProductsFilter/ProductsFilter';
@@ -35,9 +35,6 @@ const filterProducts = (products = [], filter = {}) => {
       }
     }
   );
-  console.log('filter applied', filteredProducts.length);
-  console.log('filter', filter);
-  console.log('products', products.length);
   return filteredProducts;
 }
 
@@ -71,15 +68,21 @@ const App = () => {
   }, [products]);
 
   return (
-    <Grid container justify="center">
+    <Grid container justify="center" alignItems="center">
       <Grid item md={9} lg={7}>
         {
-          loading ? 'Fetching Data' : (
-            <>
-              <ProductsFilter onFilterChange={filter => setFilteredProducts(filterProducts(products, filter))} />
-              <Products products={filteredProducts.slice(0, 20)} />
-            </>
-          )
+          loading ?
+            (
+              <Typography component="p" variant="h5" align="center">
+                Fetching Data
+              </Typography>
+            ) :
+            (
+              <>
+                <ProductsFilter onFilterChange={filter => setFilteredProducts(filterProducts(products, filter))} />
+                <Products products={filteredProducts.slice(0, 20)} />
+              </>
+            )
         }
       </Grid>
     </Grid>
