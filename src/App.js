@@ -97,7 +97,7 @@ const App = ({ classes }) => {
 
   return (
     <Grid className={classes.root} container alignItems="center" direction="column">
-      <Grid className={classes.flexGrid} container item md={9} lg={7}>
+      <Grid className={classes.flexGrid} container item md={9} lg={7} wrap="nowrap">
         {
           !products.length ?
 
