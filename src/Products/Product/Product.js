@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardMedia, Collapse, Typography, withStyles } from '@material-ui/core';
+import { Card, CardContent, CardMedia, Typography, withStyles } from '@material-ui/core';
 
 const styles = () => ({
   card: {
     display: 'flex',
     flexDirection: 'column',
     margin: 8,
+    cursor: 'pointer',
   },
   main: {
     display: 'flex',
@@ -24,13 +25,12 @@ const styles = () => ({
     height: 200,
     backgroundSize: 'auto 100%',
   },
-  wrapperInner: {
+  gallery: {
     display: 'flex',
-    padding: 16,
   },
-  galleryImage: {
-    width: 120,
-    height: 160,
+  image: {
+    width: 160,
+    height: 200,
     backgroundSize: 'auto 100%',
   },
 });
@@ -39,44 +39,48 @@ const Product = ({ classes, product }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <Card className={classes.card} raised key={product.gtin} onClick={() => setIsExpanded(!isExpanded)}>
-      <div className={classes.main}>
-        <CardMedia
-          className={classes.cover}
-          image={product.image_link}
-          title={product.title}
-        />
-        <div className={classes.details}>
-          <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5">
-              {product.title}
-            </Typography>
-            <Typography variant="subtitle2" color="textSecondary">
-              {product.gtin}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              {product.sale_price}
-              {product.price}
-              {product.gender}
-              {product.gtin}
-            </Typography>
-          </CardContent>
-        </div>
-      </div>
-      <Collapse in={isExpanded} timeout="auto" unmountOnExit classes={{ wrapperInner: classes.wrapperInner }}>
-        {
-          product
-            .additional_image_link
-            .split(',')
-            .map((link, index) => (
-              <CardMedia
-                key={index}
-                className={classes.galleryImage}
-                image={link}
-              />
-            ))
-        }
-      </Collapse>
+    <Card className={classes.card} raised onClick={() => setIsExpanded(!isExpanded)}>
+      {
+        isExpanded ?
+          <div className={classes.gallery}>
+            {
+              product
+                .additional_image_link
+                .split(',')
+                .map((link, index) => (
+                  <CardMedia
+                    key={index}
+                    className={classes.cover}
+                    image={link}
+                  />
+                ))
+            }
+          </div>
+          :
+          <div className={classes.main}>
+            <CardMedia
+              className={classes.cover}
+              image={product.image_link}
+              title={product.title}
+            />
+            <div className={classes.details}>
+              <CardContent className={classes.content}>
+                <Typography component="h5" variant="h5">
+                  {product.title}
+                </Typography>
+                <Typography variant="subtitle2" color="textSecondary">
+                  {product.gtin}
+                </Typography>
+                <Typography variant="subtitle1" color="textSecondary">
+                  {product.sale_price}
+                  {product.price}
+                  {product.gender}
+                  {product.gtin}
+                </Typography>
+              </CardContent>
+            </div>
+          </div>
+      }
     </Card>
   )
 }

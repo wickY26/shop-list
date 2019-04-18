@@ -1,17 +1,32 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import { FixedSizeList } from 'react-window';
 import Product from './Product/Product';
 
-const styles = {
-
-};
-
-const Products = ({ classes, products }) => {
+const generateContent = (products, index, style) => {
+  let content;
+  if (index < products.length) {
+    content = <Product product={products[index]} />;
+  } else {
+    content = <Typography variant="h4" align="center">Loading...</Typography>;
+  }
   return (
-    products.map(product => (
-      <Product product={product} />
-    ))
+    <div style={style}>
+      {content}
+    </div>
   )
 }
 
-export default withStyles(styles, { withTheme: true })(Products);
+const Products = ({ products, height }) => {
+  return (
+    <FixedSizeList
+      itemCount={products.length || 1}
+      height={height}
+      itemSize={216}
+    >
+      {({ index, style }) => generateContent(products, index, style)}
+    </FixedSizeList>
+  )
+}
+
+export default Products;
