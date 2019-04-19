@@ -1,8 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Grid, Typography, withStyles } from '@material-ui/core';
 import * as Papa from 'papaparse';
 import Products from './Products/Products';
 import ProductsFilter from './ProductsFilter/ProductsFilter';
+
+const styles = () => ({
+  root: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
+  },
+  flexGrid: {
+    flexGrow: 1,
+    flexDirection: 'column',
+  },
+  message: {
+    margin: 'auto',
+  },
+})
 
 /**
  * Transform data array to data object
@@ -38,10 +55,21 @@ const filterProducts = (products = [], filter = {}) => {
   return filteredProducts;
 }
 
-const App = () => {
+const App = ({ classes }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [height, setHeight] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  /**
+   * In this callback we will calculate grid container's height
+   * and let Products component use it in virtual-repeat
+   */
+  const measuredRef = useCallback(node => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+    }
+  }, []);
 
   /**
    * In this hook we fetch products.csv and transform into list of product objects
@@ -64,32 +92,42 @@ const App = () => {
    * by letting ProductsFilter component set filter and trigger onFilterChange handler
    */
   useEffect(() => {
-    products.length && setLoading(false);
-  }, [products]);
+    filteredProducts.length && setLoading(false);
+  }, [filteredProducts]);
 
   return (
-    <Grid container justify="center" alignItems="center">
-      <Grid item md={9} lg={7}>
+    <Grid className={classes.root} container alignItems="center" direction="column">
+      <Grid className={classes.flexGrid} container item md={9} lg={7}>
         {
-          loading ?
-            (
-              <Typography component="p" variant="h5" align="center">
-                Fetching Data
+          !products.length ?
+
+            <Typography className={classes.message} component="p" variant="h5" align="center">
+              Fetching Data...
               </Typography>
-            ) :
-            (
-              <>
-                <ProductsFilter onFilterChange={filter => setFilteredProducts(filterProducts(products, filter))} />
-                <Typography variant="caption" align="center">
-                  {filteredProducts.length} products are filtered out of {products.length}.
+            :
+            <>
+              <ProductsFilter onFilterChange={filter => setFilteredProducts(filterProducts(products, filter))} />
+              <Typography variant="caption" align="center" gutterBottom>
+                {filteredProducts.length} products are filtered out of {products.length}.
                 </Typography>
-                <Products products={filteredProducts.slice(0, 20)} />
-              </>
-            )
+              {
+                filteredProducts.length && !loading ?
+                  <div className={classes.flexGrid} ref={measuredRef}>
+                    <Products
+                      products={filteredProducts}
+                      height={height}
+                    />
+                  </div>
+                  :
+                  <Typography variant="h5" align="center">
+                    {loading ? 'Loading...' : 'No products found'}
+                  </Typography>
+              }
+            </>
         }
       </Grid>
     </Grid>
   );
 };
 
-export default App;
+export default withStyles(styles)(App);
