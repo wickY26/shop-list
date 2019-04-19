@@ -5,7 +5,10 @@ import debounce from 'lodash.debounce';
 const styles = theme => ({
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexShrink: 0,
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+    },
   },
   textField: {
     marginLeft: theme.spacing.unit,

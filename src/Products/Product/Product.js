@@ -15,10 +15,10 @@ const styles = () => ({
   details: {
     alignItems: 'center',
     display: 'flex',
-    flex: '1 0 auto',
+    flex: '1 1 auto',
   },
   content: {
-    flex: '1 0 auto',
+    flex: '1 1 auto',
   },
   cover: {
     width: 200,
@@ -33,7 +33,48 @@ const styles = () => ({
     height: 200,
     backgroundSize: 'auto 100%',
   },
+  discount: {
+    textDecoration: 'line-through',
+    marginRight: 16,
+  },
 });
+
+const priceContent = (price, salePrice, classes) => {
+  if (salePrice < price) {
+    return (
+      <>
+        <Typography className={classes.discount} variant="subtitle2" color="textSecondary" inline>
+          {price}
+        </Typography>
+        <Typography variant="subtitle2" inline>
+          {salePrice}
+        </Typography>
+      </>
+    );
+  } else {
+    return (
+      <Typography variant="subtitle2" color="textSecondary">
+        {price}
+      </Typography>
+    );
+  }
+}
+
+const genderContent = (gender) => {
+  let content;
+  if (gender === 'unisex') {
+    content = 'For Everyone'
+  } else if (gender === 'male') {
+    content = 'For Men Only'
+  } else if (gender === 'female') {
+    content = 'For Women Only'
+  }
+  return (
+    <Typography variant="overline" color="textSecondary">
+      {content}
+    </Typography>
+  );
+}
 
 const Product = ({ classes, product }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -65,17 +106,13 @@ const Product = ({ classes, product }) => {
             />
             <div className={classes.details}>
               <CardContent className={classes.content}>
-                <Typography component="h5" variant="h5">
+                <Typography component="h6" variant="h6">
                   {product.title}
                 </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  {product.gtin}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
-                  {product.sale_price}
-                  {product.price}
-                  {product.gender}
-                  {product.gtin}
+                {priceContent(product.price, product.sale_price, classes)}
+                {genderContent(product.gender, classes)}
+                <Typography variant="caption" color="textSecondary">
+                  Product Id: {product.gtin}
                 </Typography>
               </CardContent>
             </div>
