@@ -26,6 +26,9 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 In order to test offline usage you need to serve this build folder with a static server.
 For do this you can add serve globally with this command.<br>
-yarn global add serve<br>
+
+### `yarn global add serve`
+
 and after build process is finished you can serve recently created build folder with this command.<br>
-serve -s build
+
+### `serve -s build`
