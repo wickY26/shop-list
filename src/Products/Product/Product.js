@@ -39,7 +39,7 @@ const styles = () => ({
   },
 });
 
-const priceContent = (price, salePrice, classes) => {
+export const priceContent = (price, salePrice, classes) => {
   if (salePrice < price) {
     return (
       <>
@@ -60,7 +60,7 @@ const priceContent = (price, salePrice, classes) => {
   }
 }
 
-const genderContent = (gender) => {
+export const genderContent = (gender) => {
   let content;
   if (gender === 'unisex') {
     content = 'For Everyone'
