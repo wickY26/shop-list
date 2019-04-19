@@ -25,20 +25,26 @@ const styles = () => ({
  * Transform data array to data object
  * where object properties come from properties array
  */
-const transformData = (properties, data) => (
-  data
+export const transformData = (properties, data = []) => {
+  if (!properties || !properties.length) {
+    return [];
+  }
+  return data
     .map(values => properties
       .reduce((object, property, propertyIndex) => {
         object[property] = values[propertyIndex];
         return object;
       }, {})
-    )
-)
+    );
+}
 
 /**
  * Filter given products with given filter options
  */
-const filterProducts = (products = [], filter = {}) => {
+export const filterProducts = (products = [], filter) => {
+  if (!filter) {
+    return products;
+  }
   const filteredProducts = products.filter(
     product => {
       if (

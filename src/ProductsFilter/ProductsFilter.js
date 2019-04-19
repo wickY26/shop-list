@@ -23,6 +23,13 @@ const styles = theme => ({
   },
 });
 
+const genderMenuItems = [
+  {label: 'None', value: ''},
+  {label: 'Female', value: 'female'},
+  {label: 'Male', value: 'male'},
+  {label: 'Unisex', value: 'unisex'},
+]
+
 const ProductsFilter = ({ classes, onFilterChange }) => {
   const [filter, setFilter] = useState({ searchKey: '', gender: '', onSale: false });
   const dOnFilterChange = debounce(onFilterChange, 500);
@@ -71,9 +78,9 @@ const ProductsFilter = ({ classes, onFilterChange }) => {
         margin="normal"
         variant="outlined"
       >
-        {['male', 'female', 'unisex'].map(option => (
-          <MenuItem key={option} value={option}>
-            {option}
+        {genderMenuItems.map(option => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
           </MenuItem>
         ))}
       </TextField>
