@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import App, { filterProducts, transformData } from './App';
 
 const products = [
-  {gtin: '1', title: 'Test Product', gender: 'female', sale_price: 9, price: 10},
-  {gtin: '2', title: 'Test Product2', gender: 'male', sale_price: 10, price: 10},
-  {gtin: '3', title: 'Test Product3', gender: 'unisex', sale_price: 10, price: 10},
+  { gtin: '1', title: 'Test Product', gender: 'female', sale_price: 9, price: 10 },
+  { gtin: '2', title: 'Test Product2', gender: 'male', sale_price: 10, price: 10 },
+  { gtin: '3', title: 'Test Product3', gender: 'unisex', sale_price: 10, price: 10 },
 ];
 const data = [
   ['1', 'Test Product', 'female', 9, 10],
@@ -28,29 +28,29 @@ describe('filtering products', () => {
   });
 
   it('should return gender specific products when filter is provided with gender data', () => {
-    expect(filterProducts(products, {gender: 'female'})).toEqual([products[0]]);
-    expect(filterProducts(products, {gender: 'male'})).toEqual([products[1]]);
-    expect(filterProducts(products, {gender: 'unisex'})).toEqual([products[2]]);
+    expect(filterProducts(products, { gender: 'female' })).toEqual([products[0]]);
+    expect(filterProducts(products, { gender: 'male' })).toEqual([products[1]]);
+    expect(filterProducts(products, { gender: 'unisex' })).toEqual([products[2]]);
   });
 
   it('should return discounted products when filter is provided with onSale true', () => {
-    expect(filterProducts(products, {onSale: true})).toEqual([products[0]]);
+    expect(filterProducts(products, { onSale: true })).toEqual([products[0]]);
   });
 
   it('should return products which their title includes provided searchKey', () => {
-    expect(filterProducts(products, {searchKey: 'Test Product'})).toEqual(products);
-    expect(filterProducts(products, {searchKey: 'TEST'})).toEqual(products);
-    expect(filterProducts(products, {searchKey: 'test'})).toEqual(products);
-    expect(filterProducts(products, {searchKey: '2'})).toEqual([products[1]]);
-    expect(filterProducts(products, {searchKey: '3'})).toEqual([products[2]]);
-    expect(filterProducts(products, {searchKey: 'Invalid Term'})).toEqual([]);
+    expect(filterProducts(products, { searchKey: 'Test Product' })).toEqual(products);
+    expect(filterProducts(products, { searchKey: 'TEST' })).toEqual(products);
+    expect(filterProducts(products, { searchKey: 'test' })).toEqual(products);
+    expect(filterProducts(products, { searchKey: '2' })).toEqual([products[1]]);
+    expect(filterProducts(products, { searchKey: '3' })).toEqual([products[2]]);
+    expect(filterProducts(products, { searchKey: 'Invalid Term' })).toEqual([]);
   });
 
   it('should combine any of the filter properties and return products which passed all conditions', () => {
-    expect(filterProducts(products, {searchKey: 'Test Product', gender: 'female'})).toEqual([products[0]]);
-    expect(filterProducts(products, {searchKey: 'Test Product', gender: 'male'})).toEqual([products[1]]);
-    expect(filterProducts(products, {searchKey: 'Test Product', gender: 'male', onSale: true})).toEqual([]);
-    expect(filterProducts(products, {searchKey: '*_123', onSale: true})).toEqual([]);
+    expect(filterProducts(products, { searchKey: 'Test Product', gender: 'female' })).toEqual([products[0]]);
+    expect(filterProducts(products, { searchKey: 'Test Product', gender: 'male' })).toEqual([products[1]]);
+    expect(filterProducts(products, { searchKey: 'Test Product', gender: 'male', onSale: true })).toEqual([]);
+    expect(filterProducts(products, { searchKey: '*_123', onSale: true })).toEqual([]);
   });
 });
 
